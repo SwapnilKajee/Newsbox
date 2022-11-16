@@ -1,0 +1,22 @@
+{% extends "registration/base.html" %}
+
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center container ">
+        <form action="" method="post" class="p-4 col-md-5" style="border: 3px solid #ef1b48;">
+            <h4 style="text-align: center; text-decoration: underline;">Sign-in to your Account</h4><br>
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="username" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+            </div>
+            <div class="form-group mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn newsbox-btn mt-10 col-md-12 rounded">Login</button><br><br>
+            <a href="{% url 'register' %}" style="text-decoration: underline; font-size: 14px;" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'">Don't Have an Account?</a> 
+        </form>
+    </div>
+{% endblock content %}
+
+

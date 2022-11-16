@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Newsbox</title>
+    <link rel="icon" href="{% static 'img/core-img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/css2.css' %}" />
+    <link href="{% static 'css/bootstrap.min2.css' %}" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    {% include 'preloader.html' %}
+    
+    <header class="header-area">
+        <div class="newsbox-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container-fluid">
+                    <div class="header-date text-center"><span class="material-symbols-outlined">
+                        calendar_today
+                        </span> &nbsp; {% now "l, jS F Y" %}</div>
+                    <nav class="classy-navbar justify-content-between" id="newsboxNav">
+                        <a href="/" class="nav-brand"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+                        <div class="classy-menu">
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+                            <div class="classynav">
+                                <div class="header-add-area">
+                                    {% if user.is_authenticated %}
+                                        <p>Welcome, {{ request.user.username | upper }} !</p>
+                                        <a href="{% url 'add-news' %}" data-toggle="tooltip" data-placement="bottom" title="Add New News"><span class="material-symbols-outlined">add_box</span></a>&nbsp;&nbsp;
+                                        <a href="{% url 'my-news' %}" data-toggle="tooltip" data-placement="bottom" title="My News List"><span class="material-symbols-outlined"><span class="material-symbols-outlined">format_list_bulleted</span></span></a>&nbsp;&nbsp;
+                                        <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="LOGOUT"><span class="material-symbols-outlined">logout</span></a>
+                                    {% else %}
+                                        <a href="{% url 'register' %}" data-toggle="tooltip" data-placement="bottom" title="Register New User"><span class="material-symbols-outlined">person_add</span></a> &nbsp;
+                                        <a href="{% url 'login' %}" data-toggle="tooltip" data-placement="bottom" title="LOGIN"><span class="material-symbols-outlined">login</span></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show text-center font-weight-bold" id="msg" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock content %}
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'js/plugins/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'js/active.js' %}"></script>
+    <script>
+        setTimeout(function(){
+            if ($('#msg').length > 0) {
+                $('#msg').remove();
+            }
+        }, 5000)
+    </script>
+</body>
+
+</html>

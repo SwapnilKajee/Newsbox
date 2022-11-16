@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %} 
+    <!-- ##### Post Details Title Area Start ##### -->
+    <div class="post-details-title-area bg-overlay clearfix" style="background-image: url('{{ news.image.url }}')">
+        <div class="container-fluid h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 col-lg-8">
+                    <!-- Post Content -->
+                    <div class="post-content"> 
+                        <p class="tag"><span>{{ news.category.name | title }}</span></p>
+                        <p class="post-title">{{ news.title }}</p>
+                        <span class="post-date">{{ news.tag.all | join:" | "  | title}}</span>
+                        <div class="d-flex align-items-center mt-2">
+                            <span class="post-date mr-30">{{ news.published_at | date:"F j, Y" }}</span>
+                            <span class="post-date">By {{ news.author | title }}</span>
+                        </div>
+                        <span class="post-date"><i class="fa fa-eye">&nbsp;</i>{{ news.views_count }} Views | <i class="fa fa-comments">&nbsp;</i>{{ news.comments.count }} Comments</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Post Details Title Area End ##### -->
+
+    <!-- ##### Post Details Area Start ##### -->
+    <section class="post-news-area section-padding-100 mb-70">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Post Details Content Area -->
+                <div class="col-12 col-lg-8">
+                    <div class="post-details-content mb-100">
+                        {% if user.is_authenticated %}
+                        <p class="justify-content-center">{{ news.content | safe | striptags | linebreaks  }}</p>
+                        {% else %}
+                        <p class="justify-content-center">{{ news.content | safe | striptags | linebreaks | truncatechars:900 }}</p>
+                        <a href="{% url 'login' %}" class="btn newsbox-btn mt-30">Login to Read Full News...</a>
+                        {% endif %}
+                    </div>
+                    <hr class="hr">
+                    <!-- Comment Area Start -->
+                    <div class="comment_area clearfix mb-100">
+                        <h4 class="mb-50">{{ news.new_comments.count }} Comments</h4>
+                        {% for comment in news.new_comments %}
+                        <ol>
+                            <!-- Single Comment Area -->
+                            <li class="single_comment_area">
+                                <!-- Comment Content -->
+                                <div class="comment-content d-flex">
+                                    <!-- Comment Author -->
+                                    <div class="comment-author">
+                                        <img src="{% static 'img/user.jpg' %}" alt="{{ post.title }}">
+                                    </div>
+                                    <!-- Comment Meta -->
+                                    <div class="comment-meta">
+                                        <div class="d-flex">
+                                            <a href="" class="post-author">{{ comment.fname }}</a>
+                                            <a href="" class="post-date">{{ comment.created_at }}</a>
+                                            <a href="" class="reply">Reply</a>
+                                        </div>
+                                        <p>{{ comment.message }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                        {% endfor %} 
+                    </div>
+
+                    <div class="post-a-comment-area mb-30 clearfix">
+                        <h4 class="mb-50">Leave a reply</h4>
+
+                        <!-- Reply Form -->
+                        <div class="contact-form-area">
+                            <form class="form-contact comment_form" action="{% url 'comment' %}" id="commentForm" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="post" value="{{ news.pk }}">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <input type="text" class="form-control" name="fname" id="name" placeholder="First Name*">
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <input type="text" class="form-control" name="lname" id="name" placeholder="Last Name*">
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Email*">
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea name="message" class="form-control" name="message" id="comment" cols="30" rows="10" placeholder="Message"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn newsbox-btn mt-30" >Submit Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>  
+                    </div>
+                </div>
+                <!-- Sidebar Widget -->
+                <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                    <div class="sidebar-area">
+
+                        <!-- Newsletter Widget -->
+                        <div class="single-widget-area newsletter-widget mb-30">
+                            <h4>Subscribe to our newsletter</h4>
+                            <div id="newsletter_message"></div>
+                            <form action="" method="post" id="newsletter">
+                                {% csrf_token %}
+                                <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
+                                class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = ' Email Address '">
+                                <button type="submit" class="btn newsbox-btn w-100">Subscribe</button>
+                            </form>
+                            <p class="mt-30">Please enter your e-mail address to subscribe our channel NEWS BOX and get more news around the world.</p>
+                        </div>
+
+                        <hr class="hr">
+                        <!-- Latest News Widget -->
+                        <div class="single-widget-area ">
+                            <h4>Latest News</h4>
+                            {% for latestnews in latest_news %}
+                            <!-- Single News Area -->
+                            <div class="single-blog-post d-flex style-4 mb-30">
+                                <!-- Blog Thumbnail -->
+                                <div class="blog-thumbnail">
+                                    <a href="{% url 'news-detail' latestnews.pk %}"><img src="{{ latestnews.image.url }}" alt="{{ latestnews.title }}"></a>
+                                </div>
+
+                                <!-- Blog Content -->
+                                <div class="blog-content">
+                                    <span class="post-date">{{ latestnews.published_at | date:"F j, Y" }}</span>
+                                    <a href="{% url 'news-detail' latestnews.pk %}" class="post-title justify">{{ latestnews.title | truncatechars:45 }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <hr class="hr">
+                         <!-- Single Widget Area -->
+                         <div class="single-widget-area">
+                            <h4>Trending News</h4>
+                            <!-- Single News Area -->
+                            {% for trending in trending_news|slice:":3" %}
+                            <div class="single-blog-post style-2 mb-5">
+                                <!-- Blog Thumbnail -->
+                                <div class="blog-thumbnail">
+                                    <a href="{% url 'news-detail' trending.pk %}"><img src="{{ trending.image.url }}" alt="{{ trending.title }}"></a>
+                                </div>
+
+                                <!-- Blog Content -->
+                                <div class="blog-content">
+                                    <span class="post-date">{{ trending.published_at | date:"F j, Y" }}</span>
+                                    <a href="{% url 'news-detail' trending.pk %}" class="post-title">{{ trending.title  }}</a>
+                                    <a href="#" class="post-author">By {{ trending.author | title }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    <hr class="hr">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Post Details Area End ##### -->
+{% endblock %}

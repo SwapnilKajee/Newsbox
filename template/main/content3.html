@@ -1,0 +1,42 @@
+{% load static %}
+<div class="video-slideshow py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text-center" style="color: #ef1b48;">TOP NEWS</h4>
+                <div class="video-slides owl-carousel">
+                    {% for newz in news %}
+                    <div class="single-blog-post style-3">
+                        <div class="blog-thumbnail">
+                            <a href="{% url 'news-detail' newz.pk %}"><img src="{{ newz.image.url }}" alt=""></a>
+                        </div>
+                        <div class="blog-content">
+                            <span class="post-date">{{ newz.published_at | date:"F j, Y" }} - </span>
+                            <span class="post-date">{{ newz.category.name | title }}</span>
+                            <a href="{% url 'news-detail' newz.pk %}" class="post-title">{{ newz.title }}</a>
+                            <a href="#" class="post-author">By {{ newz.author | title }} &nbsp; | &nbsp;<i class="fa fa-eye">&nbsp;</i>{{ newz.views_count }} Views &nbsp; | &nbsp;<i class="fa fa-comments">&nbsp;</i>{{ newz.comments.count }} Comments</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <br>
+                <h4 class="text-center" style="color: #ef1b48;">MOST VIEWED NEWS</h4>
+                <div class="video-slides owl-carousel">
+                    {% for newz in trending_news %}
+                    <div class="single-blog-post style-3">
+                        <div class="blog-thumbnail">
+                            <a href="{% url 'news-detail' newz.pk %}"><img src="{{ newz.image.url }}" alt=""></a>
+                        </div>
+                        <div class="blog-content">
+                            <span class="post-date">{{ newz.published_at | date:"F j, Y" }} - </span>
+                            <span class="post-date">{{ newz.category.name | title }}</span>
+                            <a href="{% url 'news-detail' newz.pk %}" class="post-title">{{ newz.title }}</a>
+                            <a href="#" class="post-author">By {{ newz.author | title }} &nbsp; | &nbsp;<i class="fa fa-eye">&nbsp;</i>{{ newz.views_count }} Views &nbsp; | &nbsp;<i class="fa fa-comments">&nbsp;</i>{{ newz.comments.count }} Comments</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ##### News Area Start ##### -->
+<div class="news-area section-padding-100-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-9">
+                {% for recentnews in news %}
+                <!-- Single News Area -->
+                <div class="single-blog-post d-flex flex-wrap style-5 mb-30">
+                    <!-- Blog Thumbnail -->
+                    <div class="blog-thumbnail">
+                        <a href="{% url 'news-detail' recentnews.pk %}"><img src="{{ recentnews.image.url }}" alt="{{ recentnews.title }}"></a>
+                    </div>
+
+                    <!-- Blog Content -->
+                    <div class="blog-content">
+                        <span class="post-date">{{ recentnews.published_at | date:"F j, Y" }}</span>
+                        <a href="{% url 'news-detail' recentnews.pk %}" class="post-title">{{ recentnews.title }}</a>
+                        <a href="#" class="post-author">By {{ recentnews.author | title }}</a>
+                        <a href="{% url 'news-detail' recentnews.pk %}" class="p">{{ recentnews.content | truncatechars:200 | safe }}</a><br>
+                        <a href="#" class="post-date"><i class="fa fa-eye">&nbsp;</i>&nbsp;{{ recentnews.views_count }} Views &nbsp; | &nbsp; <i class="fa fa-comments">&nbsp;</i>&nbsp;{{ recentnews.comments.count }} Comments</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-3">
+                <div class="sidebar-area">
+                <hr class="hr mb-30">
+                <!-- Add Widget -->
+                <div class="single-widget-area add-widget mb-20">
+                    <h4 class="widget_title mb-30">Categories</h4>
+                    <ul class="list cat-list">
+                        {% for category in categories %}
+                            <li>
+                                <a href="{% url 'news-category' category.pk %}" class="d-flex">
+                                    <p>{{ category.name | title }}&nbsp;({{ category.news_set.count }})</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <hr class="hr">
+                </div> 
+                
+                <div class="single-widget-area ">
+                    <h4>Latest News</h4>
+                    {% for latestnews in latest_news %}
+                    <!-- Single News Area -->
+                    <div class="single-blog-post d-flex style-4 mb-30">
+                        <!-- Blog Thumbnail -->
+                        <div class="blog-thumbnail">
+                            <a href="{% url 'news-detail' latestnews.pk %}"><img src="{{ latestnews.image.url }}" alt="{{ latestnews.title }}"></a>
+                        </div>
+
+                        <!-- Blog Content -->
+                        <div class="blog-content">
+                            <span class="post-date">{{ latestnews.published_at | date:"F j, Y" }}</span>
+                            <a href="{% url 'news-detail' latestnews.pk %}" class="post-title justify">{{ latestnews.title | truncatechars:30 }}</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr class="hr">
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ##### News Area End ##### -->
+{% endblock %}

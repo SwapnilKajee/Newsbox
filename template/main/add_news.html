@@ -1,0 +1,12 @@
+{% extends "registration/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center container ">
+    <form action="" method="post" enctype="multipart/form-data" class="post-form p-4 col-md-10" style="border: 3px solid #ef1b48;">
+        <h1 class="text-center"> Publish New News</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn newsbox-btn mt-10 col-md-12 rounded">Publish News</button>
+    </form>
+</div>
+{% endblock %}

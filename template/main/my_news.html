@@ -1,0 +1,35 @@
+{% extends "registration/base.html" %}
+
+{% block content %}
+<div class="news-area section-padding-100-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-10">
+                <h4>My NEWS</h4>
+                {% for newz in news %}
+                <!-- Single News Area -->
+                <div class="single-blog-post d-flex flex-wrap style-5 mb-30">
+                    <!-- Blog Thumbnail -->
+                    <div class="blog-thumbnail">
+                        <a href="{% url 'news-detail' newz.pk %}"><img src="{{ newz.image.url }}" alt="{{ newz.title }}"></a>
+                    </div>
+
+                    <!-- Blog Content -->
+                    <div class="blog-content col-md-6">
+                        <span class="post-date">{{ newz.published_at | date:"F j, Y" }}</span>
+                        <a href="{% url 'news-detail' newz.pk %}" class="post-title">{{ newz.title }}</a>
+                        <a href="#" class="post-author">By {{ newz.author | title }}</a>
+                        <a href="{% url 'news-detail' newz.pk %}" class="p">{{ newz.content | truncatechars:200 | safe }}</a>
+                        <br>
+                        <a href="{% url 'news-detail' newz.pk %}" class="i btn btn-primary"><span class="material-symbols-outlined a">view_headline</span>VIEW</a> &nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'update-news' newz.pk %}" class="i btn btn-success"><span class="material-symbols-outlined a">publish</span>UPDATE</a>&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'delete-news' newz.pk %}" class="i btn btn-danger" onclick="return confirm('Are you sure you want to delete this News?')"><span class="material-symbols-outlined a">delete</span>DELETE</a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% include 'main/pagination.html' %}
+            </div>     
+        </div>
+    </div>
+</div>
+{% endblock %}

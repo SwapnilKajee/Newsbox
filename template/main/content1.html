@@ -1,0 +1,38 @@
+{% load static %}
+<!-- ##### Hero Area Start ##### -->
+<div class="hero-area">
+    <!-- Hero Post Slides -->
+    <div class="hero-post-slides owl-carousel">
+
+        <!-- Single Slide -->
+        <div class="single-slide">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Single Blog Post Area -->
+                    {% for recentnews in recent_news|slice:"4" %}
+                    <div class="col-12 col-md-6">  
+                        <div class="single-blog-post style-1 mb-30">
+                            <!-- Blog Thumbnail -->
+                            <a href="{% url 'news-detail' recentnews.pk %}">
+                            <div class="blog-thumbnail bg-overlay">
+                                <img src="{{ recentnews.image.url }}" alt="{{  recentnews.title }}">
+                            </div>
+                            </a>
+                            <!-- Blog Content -->
+                            
+                            <div class="blog-content">
+                                <span class="post-date">{{ recentnews.published_at | date:"F j, Y" }}</span>
+                                <span class="post-date">{{ recentnews.category.name | title }}</span>
+                                <span class="post-date"><i class="fa fa-eye">&nbsp;</i>{{ recentnews.views_count }} Views | <i class="fa fa-comments">&nbsp;</i>{{ recentnews.comments.count }} Comments</span>
+                                <a href="{% url 'news-detail' recentnews.pk %}" class="post-title">{{ recentnews.title }}</a>                 
+                            </div>
+                            
+                        </div>         
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Hero Area End ##### -->

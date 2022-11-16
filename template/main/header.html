@@ -1,0 +1,70 @@
+{% load static %}
+<!-- ##### Header Area Start ##### -->
+<header class="header-area">
+    <!-- Navbar Area -->
+    <div class="newsbox-main-menu">
+        <div class="classy-nav-container breakpoint-off">
+            <div id="logout_message"></div>
+            <div class="container-fluid">
+                <div class="header-date text-center"><span class="material-symbols-outlined">calendar_today</span>&nbsp; {% now "l, jS F Y" %}</div>
+                <!-- Menu -->
+                <nav class="classy-navbar justify-content-between" id="newsboxNav">
+                    
+                    <!-- Nav brand -->
+                    <a href="/" class="nav-brand"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>s
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+  
+                        <!-- Close Button -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+                            <ul>
+                                {% for category in categories %}
+                                <li><a href="{% url 'news-category' category.pk %}" >{{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <ul>
+                                 <li><a href="{% url 'contact' %}"> | Contact Us </a></li>
+                            </ul>
+                            <!-- Header Login Area -->
+                            <div class="header-add-area">
+                                {% if user.is_authenticated %}
+                                    <p>Welcome, {{ request.user.username | upper }} !</p>
+                                    <a href="{% url 'add-news' %}" data-toggle="tooltip" data-placement="bottom" title="Add New News"><span class="material-symbols-outlined">add_box</span></a>&nbsp;&nbsp;
+                                    <a href="{% url 'my-news' %}" data-toggle="tooltip" data-placement="bottom" title="My News List"><span class="material-symbols-outlined"><span class="material-symbols-outlined">format_list_bulleted</span></span></a>&nbsp;&nbsp;
+                                    <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="LOGOUT"><span class="material-symbols-outlined">logout</span></a>
+                                {% else %}
+                                    <a href="{% url 'register' %}" data-toggle="tooltip" data-placement="bottom" title="Register New User"><span class="material-symbols-outlined">person_add</span></a> &nbsp;
+                                    <a href="{% url 'login' %}" data-toggle="tooltip" data-placement="bottom" title="LOGIN"><span class="material-symbols-outlined">login</span></a>
+                                {% endif %}
+                            </div>
+                        </div> 
+                        <!-- Nav End -->
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- search -->
+        <div class="justify-content-center searchbox">
+            <form action="{% url 'news-search' %}" method="GET">
+                <div class="input-group mt-3 w-75">
+                    <input type="text" class="form-control" name="query" value="{{ query }}" placeholder="Search any news or kewords !" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <button type="submit" class="input-group-text" id="basic-addon2">Search</button>
+                </div>    
+            </form>  
+        </div>
+    </div>
+</header>
+<!-- ##### Header Area End ##### -->

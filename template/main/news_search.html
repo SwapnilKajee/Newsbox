@@ -1,0 +1,30 @@
+{% extends "registration/base.html" %}
+
+{% block content %}
+<div class="news-area section-padding-100-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-10">
+                <h4>Searched NEWS</h4>
+                {% for newz in page_obj %}
+                    <div class="single-blog-post d-flex flex-wrap style-5 mb-30">
+                        <div class="blog-thumbnail">
+                            <a href="{% url 'news-detail' newz.pk %}"><img src="{{ newz.image.url }}" alt="{{ newz.title }}"></a>
+                        </div>
+                        <div class="blog-content col-md-6">
+                            <span class="post-date">{{ newz.published_at | date:"F j, Y" }}</span>
+                            <a href="{% url 'news-detail' newz.pk %}" class="post-title">{{ newz.title }}</a>
+                            <a href="#" class="post-author">By {{ newz.author | title }}</a>
+                            <a href="{% url 'news-detail' newz.pk %}" class="p">{{ newz.content | truncatechars:200 | safe }}</a><br><br>
+                            <a href="#" class="post-date"><i class="fa fa-eye">&nbsp;</i>&nbsp;{{ newz.views_count }} Views &nbsp; | &nbsp; <i class="fa fa-comments">&nbsp;</i>&nbsp;{{ newz.comments.count }} Comments</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <h5 class="pt-4">No Search Results Found.</h5> 
+                {% endfor %}
+                {% include 'main/pagination_search.html' %}
+            </div>     
+        </div>
+    </div>
+</div> 
+{% endblock %}

@@ -1,0 +1,113 @@
+{% load static %}
+<!-- ##### Intro News Area Start ##### -->
+<section class="intro-news-area section-padding-100-0 mb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Intro News Tabs Area -->
+            <div class="col-12 col-lg-8">
+                <div class="intro-news-tab">
+
+                    <!-- Intro News Filter -->
+                    <div class="intro-news-filter d-flex justify-content-between">
+                        <nav>                                                                     
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
+                                {% for category in top_categories %}
+                                    <a class="nav-item nav-link" id="nav-{{ category.name }}-tab" data-toggle="tab" href="#nav-{{ category.name }}" role="tab" aria-controls="nav-{{ category.name }}" aria-selected="false">{{ category.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">           
+                            <div class="whats-news-caption">
+                                <div class="row">
+                                    {% for newz in trending_news|slice:":4" %}
+                                    <div class="col-12 col-sm-6">
+                                        <div class="single-blog-post style-2 mb-5">
+                                            <!-- Blog Thumbnail -->
+                                            <div class="blog-thumbnail">
+                                                <a href="{% url 'news-detail' newz.pk %}"><img src="{{ newz.image.url }}" alt="{{ newz.title}}"></a>
+                                            </div>
+    
+                                            <!-- Blog Content -->
+                                            <div class="blog-content">
+                                                <span class="post-date">{{ newz.published_at | date:"F j, Y" }} - </span>
+                                                <span class="post-date">{{ newz.category.name | title }}</span>
+                                                <a href="{% url 'news-detail' newz.pk %}" class="post-title">{{ newz.title }}</a>
+                                                <a href="#" class="post-author">By {{ newz.author | title }} &nbsp; | &nbsp;<i class="fa fa-eye">&nbsp;</i>{{ newz.views_count }} Views &nbsp; | &nbsp;<i class="fa fa-comments">&nbsp;</i>{{ newz.comments.count }} Comments</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% for category in categories %}
+                        <div class="tab-pane fade" id="nav-{{ category.name }}" role="tabpanel" aria-labelledby="nav-{{ category.name }}-tab">
+                            <div class="row">
+                                <!-- Single News Area -->
+                                {% for recentnews in category.news_set.all|slice:":4" %}
+                                <div class="col-12 col-sm-6">
+                                    <div class="single-blog-post style-2 mb-5">
+                                        <!-- Blog Thumbnail -->
+                                        <div class="blog-thumbnail">
+                                            <a href="{% url 'news-detail' recentnews.pk %}"><img src="{{ recentnews.image.url }}" alt="{{ recentnews.title}}"></a>
+                                        </div>
+                                        <!-- Blog Content -->
+                                        <div class="blog-content">
+                                            <span class="post-date">{{ recentnews.published_at | date:"F j, Y" }} - </span>
+                                            <span class="post-date">{{ recentnews.category.name | title }}</span>
+                                            <a href="{% url 'news-detail' recentnews.pk %}" class="post-title">{{ recentnews.title }}</a>
+                                            <a href="#" class="post-author">By {{ recentnews.author | title }} &nbsp; | &nbsp;<i class="fa fa-eye">&nbsp;</i>{{ recentnews.views_count }} Views &nbsp; | &nbsp;<i class="fa fa-comments">&nbsp;</i>{{ recentnews.comments.count }} Comments</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Widget -->
+            <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                <div class="sidebar-area">
+
+                    <!-- Newsletter Widget -->
+                    <div class="single-widget-area newsletter-widget mb-30">
+                        <h4>Subscribe to our newsletter</h4>
+                        <div id="newsletter_message"></div>
+                        <form action="" method="post" id="newsletter">
+                            {% csrf_token %}
+                            <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
+                            class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
+                            onblur="this.placeholder = ' Email Address '">
+                            <button type="submit" class="btn newsbox-btn w-100">Subscribe</button>
+                        </form>
+                        <p class="mt-30">Please enter your e-mail address to subscribe our channel NEWS BOX and get more news around the world.</p>
+                    </div>
+                    <hr class="hr mb-30">
+                    <!-- Add Widget -->
+                    <div class="single-widget-area add-widget mb-20">
+                        <h4 class="widget_title mb-30">Categories</h4>
+                        <ul class="list cat-list">
+                            {% for category in categories %}
+                                <li>
+                                    <a href="{% url 'news-category' category.pk %}" class="d-flex">
+                                        <p>{{ category.name | title }}&nbsp;({{ category.news_set.count }})</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <hr class="hr">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ##### Intro News Area End ##### -->
